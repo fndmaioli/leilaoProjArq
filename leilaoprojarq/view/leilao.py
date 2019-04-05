@@ -11,7 +11,10 @@ class View:
         print(self.controller.leilao.produto.nome)
         print('Preço inicial: ', self.controller.leilao.produto.preco_inicial)
         print('Vendedor: ', self.controller.leilao.vendedor.nome)
-        print('Maior lance: ', self.controller.maior_lance)
+        if self.controller.maior_lance is not None:
+            print('Maior lance: ', self.controller.maior_lance.preco)
+            for k, v in self.controller.leilao.lances.items():
+                print(k, ': ', v[len(v)-1].preco)
 
 
     def vendedor_fluxo(self):
@@ -28,7 +31,8 @@ class View:
         else:
             v = int(input("0-Sair\n1-Encerrar leilão"))
             if v == 1:
-                self.controller.encerra_leilao()
+                item,lance = self.controller.encerra_leilao()
+                print(item.nome, 'vendido para ', lance.comprador.nome, ' por ', lance.preco)
                 self.leilao_iniciado = False
 
 
@@ -38,8 +42,6 @@ class View:
         while v != 0:
             v = int(input("0-Sair\n1-Dar lance\n"))
             if v == 1:
-                for k, v in self.controller.leilao.lances.items():
-                    print(k, ': ', v)
 
                 nome_comprador = input('Digite seu nome: ')
                 preco = float(input('Digite o valor: '))
